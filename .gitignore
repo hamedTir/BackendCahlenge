@@ -15,8 +15,8 @@ project.lock.json
 artifacts/
 
 # Ignore build output
-/bin/
-/obj/
+/chalengeBackend/bin/
+/chalengeBackend/obj/
 /Dockerfile
 /docker-compose.yml
 /docker-compose.override.yml

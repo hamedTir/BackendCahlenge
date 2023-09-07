@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Load configuration settings from appsettings.json
 var configuration = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("appsettings.json")
+    .AddJsonFile("Configuration/appsettings.json")
     .Build();
 
 // Add services to the container.

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mohammad.hm\\Desktop\\hamed chalenge\\chalengeBackend\\chalengeBackend\\ChalengeBackend.csproj": {}
+    "C:\\Users\\mohammad.hm\\Documents\\GitHub\\BackendCahlenge\\chalengeBackend\\ChalengeBackend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mohammad.hm\\Desktop\\hamed chalenge\\chalengeBackend\\chalengeBackend\\ChalengeBackend.csproj": {
+    "C:\\Users\\mohammad.hm\\Documents\\GitHub\\BackendCahlenge\\chalengeBackend\\ChalengeBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mohammad.hm\\Desktop\\hamed chalenge\\chalengeBackend\\chalengeBackend\\ChalengeBackend.csproj",
+        "projectUniqueName": "C:\\Users\\mohammad.hm\\Documents\\GitHub\\BackendCahlenge\\chalengeBackend\\ChalengeBackend.csproj",
         "projectName": "ChalengeBackend",
-        "projectPath": "C:\\Users\\mohammad.hm\\Desktop\\hamed chalenge\\chalengeBackend\\chalengeBackend\\ChalengeBackend.csproj",
+        "projectPath": "C:\\Users\\mohammad.hm\\Documents\\GitHub\\BackendCahlenge\\chalengeBackend\\ChalengeBackend.csproj",
         "packagesPath": "C:\\Users\\mohammad.hm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mohammad.hm\\Desktop\\hamed chalenge\\chalengeBackend\\chalengeBackend\\obj\\",
+        "outputPath": "C:\\Users\\mohammad.hm\\Documents\\GitHub\\BackendCahlenge\\chalengeBackend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\mohammad.hm\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,13 +40,15 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "Microsoft.EntityFrameworkCore.Sqlite.Core": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.10, )"
             },
-            "Microsoft.EntityFrameworkCore.Sqlite.Design": {
+            "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
-              "version": "[1.1.6, )"
+              "version": "[7.0.10, )"
             },
             "Microsoft.Extensions.Configuration": {
               "target": "Package",

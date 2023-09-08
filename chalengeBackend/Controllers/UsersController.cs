@@ -63,6 +63,25 @@ namespace ChalengeBackend.Controllers
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
 
+        // GET: api/Users/{userId}/notes
+        [HttpGet("{userId}/notes")]
+        public async Task<ActionResult<IEnumerable<Note>>> GetUserNotes(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var notes = await _context.Notes
+                .Where(n => n.UserId == userId)
+                .ToListAsync();
+
+            return notes;
+        }
+
+
         // PUT: api/Users/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, userUpdateModelDto user)

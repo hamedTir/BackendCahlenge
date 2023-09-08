@@ -27,7 +27,28 @@ namespace ChalengeBackend.Database
                 entity.Property(e => e.Age).HasColumnName("Age").IsRequired();
                 entity.Property(e => e.Website).HasColumnName("Website");
 
-                // Additional constraints (e.g., unique, range) can be defined here using Fluent API
+                // Define the one-to-many relationship with the Note entity
+                entity.HasMany(u => u.Notes)
+                    .WithOne(n => n.User)
+                    .HasForeignKey(n => n.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+            });
+
+            modelBuilder.Entity<Note>(entity =>
+            {
+                entity.ToTable("Notes"); // Set the table name for the Note entity
+
+                entity.HasKey(e => e.Id); // Define the primary key
+
+                entity.Property(e => e.Id).HasColumnName("Id").IsRequired();
+                entity.Property(e => e.Content).HasColumnName("Content").IsRequired().HasColumnType("nvarchar");
+                entity.Property(e => e.DateCreated).HasColumnName("DateCreated").IsRequired().HasColumnType("datetime");
+                entity.Property(e => e.DateModified).HasColumnName("DateModified").IsRequired().HasColumnType("datetime");
+                entity.Property(e => e.Views).HasColumnName("Views").IsRequired();
+                entity.Property(e => e.Published).HasColumnName("Published").IsRequired();
+
+
             });
         }
     }

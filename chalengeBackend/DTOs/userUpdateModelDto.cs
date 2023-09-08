@@ -1,16 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
-namespace ChalengeBackend.Database.Model
+namespace ChalengeBackend.DTOs
 {
-    public class User
+    public class userUpdateModelDto
     {
-        public int Id { get; set; }
-        [Required]
-        [MaxLength(128)]
         public string FirstName { get; set; } = String.Empty;
         [MaxLength(128)]
-        public string? LastName { get; set; } 
+        public string? LastName { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; } = String.Empty;
@@ -18,10 +14,5 @@ namespace ChalengeBackend.Database.Model
         [Range(0, 128)]
         public int Age { get; set; }
         public string? Website { get; set; }
-
-        // Navigation property to Notes
-       // [JsonIgnore]
-        public ICollection<Note>? Notes { get; set; }
     }
-
 }

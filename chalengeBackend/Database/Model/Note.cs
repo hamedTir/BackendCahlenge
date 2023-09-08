@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ChalengeBackend.Database.Model
 {
@@ -22,7 +23,8 @@ namespace ChalengeBackend.Database.Model
         // Foreign key to User
         public int UserId { get; set; }
         // Navigation property to User
-        public User User { get; set; } = new User();
+        [JsonIgnore]
+        public User User { get; set; } 
     }
 }
 

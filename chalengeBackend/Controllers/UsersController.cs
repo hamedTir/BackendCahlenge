@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ChalengeBackend.Database.Model;
 using ChalengeBackend.Database;
+using ChalengeBackend.DTOs;
 
 namespace ChalengeBackend.Controllers
 {
@@ -30,7 +31,9 @@ namespace ChalengeBackend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users
+                .Include(u => u.Notes) // Include the related Notes
+                .FirstOrDefaultAsync(u => u.Id == id);
 
             if (user == null)
             {
@@ -38,12 +41,22 @@ namespace ChalengeBackend.Controllers
             }
 
             return user;
+
         }
 
         // POST: api/Users
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            // Check if the email address is already in use by another user
+            var isEmailTaken = await _context.Users
+                .AnyAsync(u => u.Email == user.Email);
+
+            if (isEmailTaken)
+            {
+                return BadRequest("Email address is already in use by another user.");
+            }
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -52,32 +65,45 @@ namespace ChalengeBackend.Controllers
 
         // PUT: api/Users/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, userUpdateModelDto user)
         {
-            if (id != user.Id)
+            // Check if the user with the given ID exists
+            var existingUser = await _context.Users.FindAsync(id);
+
+            if (existingUser == null)
             {
-                return BadRequest();
+                return NotFound("User not found");
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            // Check if the email address is already in use by another user
+            var isEmailTaken = await _context.Users
+                .AnyAsync(u => u.Email == user.Email && u.Id != id);
+
+            if (isEmailTaken)
+            {
+                return BadRequest("Email address is already in use by another user.");
+            }
+
+            // Apply updates to the existing user
+            existingUser.FirstName = user.FirstName;
+            existingUser.LastName = user.LastName;
+            existingUser.Email = user.Email;
+            existingUser.Age = user.Age;
+            existingUser.Website = user.Website;
 
             try
             {
+                // Update the user in the database
+                _context.Users.Update(existingUser);
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent();
+                return NoContent(); // Return 204 No Content on successful update
+            }
+            catch (Exception ex)
+            {
+                // Handle any database update errors and return a 500 Internal Server Error
+                return StatusCode(500, "An error occurred while updating the user.");
+            }
         }
 
         // DELETE: api/Users/5

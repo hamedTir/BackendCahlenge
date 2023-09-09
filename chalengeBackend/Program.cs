@@ -17,13 +17,25 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowOrigin", builder =>
+    {
+        builder
+            .AllowAnyOrigin()
+
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
+app.UseCors("AllowOrigin");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

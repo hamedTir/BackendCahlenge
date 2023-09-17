@@ -24,7 +24,7 @@ namespace ChalengeBackend.Database.Model
         public int UserId { get; set; }
         // Navigation property to User
         [JsonIgnore]
-        public User User { get; set; } 
+        public User? User { get; set; } 
     }
 }
 

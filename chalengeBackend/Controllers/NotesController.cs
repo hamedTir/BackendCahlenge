@@ -101,7 +101,18 @@ namespace ChalengeBackend.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(note).State = EntityState.Modified;
+            var existingNote = await _context.Notes.FindAsync(id);
+
+            if (existingNote == null)
+            {
+                return NotFound();
+            }
+
+            // Update the content
+            existingNote.Content = note.Content;
+
+            // Update the dateModified
+            existingNote.DateModified = DateTime.UtcNow; // Set it to the current UTC time
 
             try
             {

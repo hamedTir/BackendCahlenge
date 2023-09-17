@@ -44,6 +44,30 @@ namespace ChalengeBackend.Controllers
 
         }
 
+        // GET: api/Users/5
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<userUpdateModelDto>> GetUserById(int id)
+        {
+            var user = await _context.Users
+               
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var userById = new userUpdateModelDto()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Age = user.Age,
+                Email = user.Email,
+                Website = user.Website
+            };
+            return userById;
+
+        }
+
         // POST: api/Users
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)

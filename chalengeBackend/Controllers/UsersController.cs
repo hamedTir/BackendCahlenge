@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using ChalengeBackend.Database.Model;
 using ChalengeBackend.Database;
 using ChalengeBackend.DTOs;
+using Microsoft.AspNetCore.SignalR;
+using ChalengeBackend.Hub;
 
 namespace ChalengeBackend.Controllers
 {
@@ -14,16 +16,22 @@ namespace ChalengeBackend.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHubContext<UserHub> _hubContext;
 
-        public UsersController(ApplicationDbContext context)
+        public UsersController(ApplicationDbContext context, IHubContext<UserHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         // GET: api/Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
+            counter.GetAllUserCounter += 1;
+            var message = string.Format("{0} count", counter.GetAllUserCounter);
+            // Send the message to the SignalR hub
+           await _hubContext.Clients.All.SendAsync("ReceiveGetAllUserMessage", message);
             return await _context.Users.ToListAsync();
         }
 
@@ -168,6 +176,11 @@ namespace ChalengeBackend.Controllers
         private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.Id == id);
+        }
+
+        public static class counter
+        {
+            public static int GetAllUserCounter { get; set; }
         }
     }
 }

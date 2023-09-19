@@ -1,4 +1,5 @@
 using ChalengeBackend.Database;
+using ChalengeBackend.Hub;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 
@@ -16,17 +17,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
 });
-
+builder.Services.AddSignalR();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: "AllowOrigin", builder =>
-    {
-        builder
-            .AllowAnyOrigin()
-
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-    });
+    options.AddPolicy("CORSPolicy",
+        builder => builder
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials()
+        .SetIsOriginAllowed((hosts) => true));
 });
 
 builder.Services.AddControllers();
@@ -35,7 +34,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-app.UseCors("AllowOrigin");
+app.UseCors("CORSPolicy");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -43,8 +42,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthorization();
-
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<UserHub>("/user");
+});
 app.MapControllers();
 
 app.Run();

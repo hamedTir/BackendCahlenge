@@ -5,7 +5,12 @@
       "ProjectGuid": "ba6bef79-0d50-49f7-bb39-55c6b908f713",
       "DisplayName": "ChalengeBackend",
       "ColorIndex": 0
+    },
+    "6c0ed122-4d38-42b9-8a49-c25e8d50f22e": {
+      "ProjectGuid": "6c0ed122-4d38-42b9-8a49-c25e8d50f22e",
+      "DisplayName": "ChalengeBackend",
+      "ColorIndex": 1
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 2
 }
